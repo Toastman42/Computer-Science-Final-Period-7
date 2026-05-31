@@ -8,7 +8,7 @@ import tkinter as tk
 import random
 from tkinter import messagebox
 
-# words for Hangman Game
+# words for Hangman Game in a list
 words = ["scholar", "prophets", "final", "huh", "familyguy", "google", "etc", "dog", "cat", "unfathomable", "indubitably"]
 word = random.choice(words)
 
@@ -76,10 +76,12 @@ class game(tk.Tk):
                 firstAnsRight = tk.Label(self, text="CORRECT!")
                 firstAnsRight.pack()
                 self.after(1000, self.phase_two)
+
             else:
                 firstAnsWrong = tk.Label(self, text="Wrong! DESTROY!")
                 firstAnsWrong.pack()
                 self.after(1000, self.destroy)
+
         except Exception as e:
             print(f"Cause of Death: {e}")
 
@@ -133,28 +135,34 @@ class game(tk.Tk):
                     display_chars.append(char)
                 else:
                     display_chars.append('_')
+
             self.hiddenword.config(text=" ".join(display_chars))
 
-            # If no _, then you win this section and wizard threatens you
+            # If no _, then you win this section and wizard threatens you. Yes or no results in same outcome
             if "_" not in display_chars:
                 threat = messagebox.askyesno("You've won for now...",  "But just you wait! in ten years, I will come back to get you!\nDO YOU UNDERSTAND ME?!")
                 self.myButton2.config(state="disabled")
+
                 if threat:
                     self.phase_three()
+
                 else:
                     self.phase_three()
+
             # If wrong guess, remove the amount of guesses you have left by one.
             if checker_2 not in word.lower():
                 self.guesses -= 1
                 secAnsWrong = tk.Label(self, text=f"Try Again! {self.guesses} guesses left.")
                 secAnsWrong.pack()
                 self.after(2000, secAnsWrong.destroy)
+
                 # destroy if no guesses left
                 if self.guesses <= 0:
                     self.destroy()
         
         except Exception as e:
             print(f"Cause of Death: {e}")
+
     # phase three
     def phase_three(self):
         # deletes previous widgets
@@ -165,21 +173,30 @@ class game(tk.Tk):
         self.finalWizz.pack()
         # after five seconds, make the wizard deliever Full Power Frieza's line when he decides to take Super Saiyan Goku's mercy for granted
         self.after(5000, self.configurefinalWizz)
+
     # The finale of the wizzard
     def configurefinalWizz(self):
         # It's over. Never hurt anyone EVER AGAIN.
         self.finalWizz.config(text="The wizard says: 'I'm the STRONGEST in the UNIVERSE! And that is why... \nYou... Horrible... You must...\nYOU MUST DIE BY MY HAND!!!'", font=("Times New Roman", 16, "bold"), fg="Purple", height=4, relief="groove")
 
+        # Final Entry Box
         self.finalEntryBox = tk.Entry(self, width=50, borderwidth=5)
         self.finalEntryBox.pack()
+
+         # Final Button
         self.myButton3 = tk.Button(self, text="Submit", command=self.final_check)
         self.myButton3.pack(pady=10)
 
+    # Final Check
     def final_check(self):
+        # Gets the user's final entry
         youfool = self.finalEntryBox.get().upper()
+        # Set to meet requirement
         ssjgokuquotes = {"YOU FOOL", "YOU FOOL!", "YOU FOOL!!", "YOU FOOL!!!", "YOU MORON!!!", "Huh? You fool! Ha!", "YOU MORON", "YOU MORON!", "YOU MORON!!", "You foolish bastard!", "BAKAYARO!", "bakayarō!", "ESTUPIDO!"}
         ssjgokuquotes_upper = {item.upper() for item in ssjgokuquotes}
+        # Try Except for if else.
         try:
+            # if your final entry matches one of the quotes, then destroy all previous widgets and make a label to say you win.
             if youfool in ssjgokuquotes_upper:
                 for widget in self.winfo_children():
                     widget.destroy()
@@ -188,6 +205,8 @@ class game(tk.Tk):
                 self.super_final_label.pack()
                 self.quit_button = tk.Button(self, text="Quit", command=self.destroy)
                 self.quit_button.pack(pady=50)
+            # if your final entry does not match, you lose.
+
             else:
                 for widget in self.winfo_children():
                     widget.destroy()
@@ -196,6 +215,7 @@ class game(tk.Tk):
                 super_final_loss.pack()
                 self.quit_button = tk.Button(self, text="Quit", command=self.destroy)
                 self.quit_button.pack(pady=50)
+
         except Exception as e:
             print(f"Cause of Death: {e}")
 
@@ -207,19 +227,24 @@ class wizard(tk.Frame):
         self.backstory()
         self.after(5000, self.wizardspeech)
 
+    # the first backstory.
     def backstory(self):
         self.backstoryLabel = tk.Label(self, text="You have stumbled into a wrecked town after waking up in the middle of nowhere.\nYou come across a sterotypical looking wizard who has something to say.")
         self.backstoryLabel.pack(pady=20)
 
+    # first wizard dialog
     def wizardspeech(self):
+        # Tuple to meet requirement
         ampm = ("PM", "AM")
         ampm_rand = random.choice(ampm)
         self.backstoryLabel.config(text=f"He says: 'This town has been destroyed by a {self.number} eyed monster! This happened at {random.randint(1,12)}:{random.randint(0,59)} {ampm_rand}!\nWhat say you, you {random.randint(0,32)}-toothed freak?!")
         self.after(5000, self.show_hint)
 
+    # first and only hint shown
     def show_hint(self):
         helloneighbor = tk.Label(self, text="Hint: One of these numbers correlates to the amount of words you should say.")
         helloneighbor.pack(pady=5)
+        
 # works
 def main():
     app = game()
