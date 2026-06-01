@@ -9,7 +9,7 @@ import random
 from tkinter import messagebox
 
 # words for Hangman Game in a list
-words = ["scholar", "prophets", "final", "huh", "familyguy", "google", "etc", "dog", "cat", "unfathomable", "indubitably"]
+words = ["scholar", "prophets", "final", "python", "google", "dog", "cat", "unfathomable", "indubitably"]
 word = random.choice(words)
 
 # Blanket for where the game is going to happen
@@ -177,6 +177,7 @@ class game(tk.Tk):
     # The finale of the wizzard
     def configurefinalWizz(self):
         # It's over. Never hurt anyone EVER AGAIN.
+        # The wizard's final words. Configures the finalWizz label to say this:
         self.finalWizz.config(text="The wizard says: 'I'm the STRONGEST in the UNIVERSE! And that is why... \nYou... Horrible... You must...\nYOU MUST DIE BY MY HAND!!!'", font=("Times New Roman", 16, "bold"), fg="Purple", height=4, relief="groove")
 
         # Final Entry Box
@@ -190,14 +191,14 @@ class game(tk.Tk):
     # Final Check
     def final_check(self):
         # Gets the user's final entry
-        youfool = self.finalEntryBox.get().upper()
+        finalEntry = self.finalEntryBox.get().upper()
         # Set to meet requirement
         ssjgokuquotes = {"YOU FOOL", "YOU FOOL!", "YOU FOOL!!", "YOU FOOL!!!", "YOU MORON!!!", "Huh? You fool! Ha!", "YOU MORON", "YOU MORON!", "YOU MORON!!", "You foolish bastard!", "BAKAYARO!", "bakayarō!", "ESTUPIDO!"}
         ssjgokuquotes_upper = {item.upper() for item in ssjgokuquotes}
         # Try Except for if else.
         try:
             # if your final entry matches one of the quotes, then destroy all previous widgets and make a label to say you win.
-            if youfool in ssjgokuquotes_upper:
+            if finalEntry in ssjgokuquotes_upper:
                 for widget in self.winfo_children():
                     widget.destroy()
                 self.config(bg="#3F3F36")
@@ -242,9 +243,9 @@ class wizard(tk.Frame):
 
     # first and only hint shown
     def show_hint(self):
-        helloneighbor = tk.Label(self, text="Hint: One of these numbers correlates to the amount of words you should say.")
-        helloneighbor.pack(pady=5)
-        
+        hint = tk.Label(self, text="Hint: One of these numbers correlates to the amount of words you should say.")
+        hint.pack(pady=5)
+
 # works
 def main():
     app = game()
